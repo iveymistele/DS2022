@@ -1,0 +1,13 @@
+#!/bin/bash
+
+curl https://www.tacobell.com/images/22362_crunchwrap_supreme_750x660.jpg > cwrap.jpg 
+
+aws s3 cp cwrap.jpg s3://ds2022-zyh4up/
+
+presigned-url=$(aws s3 presign --expires-in 604800 s3://ds2022-zyh4up/cwrap.jpj)
+
+echo "$presigned-url"
+
+
+
+

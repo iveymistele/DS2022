@@ -1,0 +1,34 @@
+#!/usr/local/bin/python3
+
+import requests
+import boto3
+
+s3 = boto3.client('s3', region_name="us-east-1")
+
+url = "https://treenewal.com/wp-content/uploads/2020/11/oak-tree-care.png"
+
+file_path = 'tree.png'
+
+response = requests.get(url)
+
+with open(file_path, 'wb') as file:
+    file.write(response.content)
+
+# file saved as tree.png
+
+s3.upload_file('tree.png', 'ds2022-zyh4up', 'tree.png')
+
+# vars needed
+bucket_name = 'ds2022-zyh4up'
+object_name = 'tree.png'
+expires_in = 604800
+
+response = s3.generate_presigned_url(
+    'get_object',
+    Params={'Bucket': bucket_name, 'Key': object_name},
+    ExpiresIn=expires_in
+)
+
+print(response)
+
+
